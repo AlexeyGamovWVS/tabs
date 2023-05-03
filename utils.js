@@ -7,11 +7,6 @@ export const UI_SELECTORS = {
   TAB_CONTENT_ACTIVE: ".active", //селектор контента активного таба
 };
 
-export const UI_CLASSES = {
-  TAB_BTN_ACTIVE: "active", //класс активного таба
-  TAB_CONTENT_ACTIVE: "active", //класс контента активного таба
-}
-
 export const UI_SELECTORS_ANOTHER = {
 	TAB_ROW: ".tabs",
   TAB_BUTTON: ".js-tab-trigger",
