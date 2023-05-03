@@ -1,13 +1,20 @@
-export class Tabs {
-  constructor(selectors, classes) {
+export default class Tabs {
+  constructor(selectors) {
+    /* selectors = {
+      TAB_ROW: ".tabs", // строка табов
+      TAB_BUTTON: ".js-tab-trigger", // селектор таб-кнопки (можно использовать li)
+      TAB_CONTENT: ".js-tab-content", // селектор контента таба
+      SECTION: ".services", // секция, в которой расположены табы
+      TAB_BTN_ACTIVE: ".tabs__item-name_active", // селектор активного таба
+      TAB_CONTENT_ACTIVE: ".tabs__item-content_active", // селектор контента активного таба
+    }; */
     this._selectors = selectors;
-    this._classes = classes;
   }
 
-  initTabs() {
+  initTabs(typeOfAction = "click") {
     this._getElements();
     this._setAttributes();
-    this._setListeners();
+    this._setListeners(typeOfAction);
     this._showByIndex(0);
   }
 
@@ -15,9 +22,7 @@ export class Tabs {
     this._section = document.querySelector(this._selectors.SECTION);
     this._tabRow = this._section.querySelector(this._selectors.TAB_ROW);
     this._headers = this._tabRow.querySelectorAll(this._selectors.TAB_BUTTON);
-    this._contents = this._tabRow.querySelectorAll(
-      this._selectors.TAB_CONTENT
-    );
+    this._contents = this._tabRow.querySelectorAll(this._selectors.TAB_CONTENT);
     this._activeTab = this._tabRow.querySelector(
       this._selectors.TAB_BTN_ACTIVE
     );
@@ -28,6 +33,7 @@ export class Tabs {
 
   _setAttributes() {
     this._headers.forEach((header, index) => {
+      // eslint-disable-next-line no-param-reassign
       header.dataset.index = index;
       header.setAttribute("role", "tab");
       this._contents[index].setAttribute("role", "tab-content");
@@ -35,8 +41,8 @@ export class Tabs {
     });
   }
 
-  _setListeners() {
-    this._tabRow.addEventListener("click", (e) => {
+  _setListeners(typeOfAction) {
+    this._tabRow.addEventListener(typeOfAction, (e) => {
       const target = e.target.closest(this._selectors.TAB_BUTTON);
       if (target) {
         e.preventDefault();
@@ -55,15 +61,16 @@ export class Tabs {
   }
 
   _toggleClass(boolean) {
-    this._activeTab
-      ? this._activeTab.classList.toggle(this._classes.TAB_BTN_ACTIVE, boolean)
-      : null;
-    this._activeTabContent
-      ? this._activeTabContent.classList.toggle(
-          this._classes.TAB_CONTENT_ACTIVE,
-          boolean
-        )
-      : null;
+    this._activeTab &&
+      this._activeTab.classList.toggle(
+        this._selectors.TAB_BTN_ACTIVE.substring(1),
+        boolean
+      );
+    this._activeTabContent &&
+      this._activeTabContent.classList.toggle(
+        this._selectors.TAB_CONTENT_ACTIVE.substring(1),
+        boolean
+      );
   }
 
   _showByIndex(index) {
