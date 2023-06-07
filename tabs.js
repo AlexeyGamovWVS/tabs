@@ -42,14 +42,20 @@ export default class Tabs {
   }
 
   _setListeners(typeOfAction) {
-    this._tabRow.addEventListener(typeOfAction, (e) => {
-      const target = e.target.closest(this._selectors.TAB_BUTTON);
-      if (target) {
-        e.preventDefault();
-        this._setActiveTab(target);
-      }
-    });
+    this._tabRow.addEventListener(typeOfAction, this._onEventHandler);
   }
+
+  _removeEventListeners(typeOfAction) {
+    this._tabRow.removeEventListener(typeOfAction, this._onEventHandler);
+  }
+
+  _onEventHandler = (e) => {
+    const target = e.target.closest(this._selectors.TAB_BUTTON);
+    if (target) {
+      e.preventDefault();
+      this._setActiveTab(target);
+    }
+  };
 
   _setActiveTab(targetTab) {
     if (targetTab !== this._activeTab) {
